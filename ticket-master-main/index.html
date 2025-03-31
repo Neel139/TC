@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         const linkElement = document.createElement('link');
         linkElement.rel = 'stylesheet';
@@ -18,6 +19,32 @@
         const updatedCssUrl = `color.css?t=${timestamp}`;
         linkElement.href = updatedCssUrl;
         document.head.appendChild(linkElement);
+    </script>
+    <script>
+        function generateQRCode(qrData) {
+            // Clear previous QR codes
+            document.getElementById("qr-code-container").innerHTML = "";
+            document.getElementById("popup-qr-code-container").innerHTML = "";
+    
+            // Generate new QR code
+            new QRCode(document.getElementById("qr-code-container"), {
+                text: qrData,
+                width: 128,
+                height: 128
+            });
+    
+            // Generate enlarged QR code for popup
+            new QRCode(document.getElementById("popup-qr-code-container"), {
+                text: qrData,
+                width: 256,
+                height: 256
+            });
+        }
+    
+        // Call this function manually with a new QR link when needed
+        function updateQR(newQRData) {
+            generateQRCode(newQRData);
+        }
     </script>
     <script>
         function openPopup() {
@@ -38,7 +65,7 @@
         </div>
         <div class="qr-square">
             <a href="#" onclick="openPopup(); return false;">
-                <img class="qr-code" src="your-qr-code-image.png" alt="QR Code">
+                <div id="qr-code-container"></div>
             </a>
             <div class="tap-to-enlarge">Tap to enlarge</div>
         </div>
@@ -58,9 +85,9 @@
         <div class="expires-text">Expires in <span id="countdown"></span></div>
         <img class="bottom-image" src="bottom.png" alt="Bottom Image">
         
-        <div id="popupModal" style="position: fixed;top: 19%;left: 52%;transform: translate(-50%, -50%);width: 100%;background-color: rgb(255, 255, 255);border: 2px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;padding: 20px 20px 20px 487px;height: 142%;display: none;">
-                <img onclick="closePopup()" src="your-qr-code-image.png" alt="QR Code" style="width: 50%;object-fit: contain;padding-top: 130%;margin-bottom: 65px;">
-                <a class="back-font">Tap to go back</a>
+        <div id="popupModal" style="position: fixed; top: 19%; left: 52%; transform: translate(-50%, -50%); width: 100%; background-color: rgb(255, 255, 255); border: 2px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px; padding: 20px 20px 20px 487px; height: 142%; display: none;">
+            <div id="popup-qr-code-container"></div>
+            <a class="back-font" onclick="closePopup()">Tap to go back</a>
         </div>
     </div>
     <script>
