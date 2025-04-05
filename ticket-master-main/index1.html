@@ -1,8 +1,6 @@
-
 <!DOCTYPE html>
 <html>
 
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <head>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="user-scalable=0">
@@ -10,7 +8,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
-    <script src="qrcode.min.js"></script> <!-- Include QRCode.js -->
     <script>
         const linkElement = document.createElement('link');
         linkElement.rel = 'stylesheet';
@@ -19,6 +16,8 @@
         const updatedCssUrl = `color.css?t=${timestamp}`;
         linkElement.href = updatedCssUrl;
         document.head.appendChild(linkElement);
+    </script>
+    <script>
         function openPopup() {
             document.getElementById('popupModal').style.display = 'block';
         }
@@ -26,37 +25,59 @@
         function closePopup() {
             document.getElementById('popupModal').style.display = 'none';
         }
-
-         // Function to dynamically generate the QR code
-         function generateQRCode() {
-            var qrText = "05020100072hMS72/M/6MKTH5JUYYuPZ96w3oY/3P7S5qXkb3fwmrjChH8B0Y/zY8iY7e12TO148PyrMm4lVP2/m9gcwKNUTn96OtwIsu9Xc4kU/0tnUFAljL0dwff1KvwCmOXj6fjaWRhJ2cLwJBMl0t5JdRM81jvLaNnd9X08a/rN5Sud3rzRwXiKrs=";
-
-            // Generate QR code for the main page
-            new QRCode(document.getElementById("qrcode"), {
-                text: qrText, // URL or text to encode
-                width: 382, // Width of the QR code (in pixels)
-                height: 382, // Height of the QR code (in pixels)
-                colorDark: "#000000", // Dark color (black)
-                colorLight: "#ffffff", // Light color (white)
-                correctLevel: QRCode.CorrectLevel.L // Error correction level (L for low)
-            });
-
-            // Generate QR code for the popup
-            new QRCode(document.getElementById("popupQRCode"), {
-                text: qrText, // URL or text to encode
-                width: 256, // Width of the QR code (in pixels)
-                height: 256, // Height of the QR code (in pixels)
-                colorDark: "#000000", // Dark color (black)
-                colorLight: "#ffffff", // Light color (white)
-                correctLevel: QRCode.CorrectLevel.L // Error correction level (L for low)
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function generateQRCode(link) {
+            const qrCodeContainer = document.querySelector('.qr-square img');
+            QRCode.toDataURL(link, { width: 362.59, margin: 0.1, errorCorrectionLevel: 'H' }, function (err, url) { 
+                // Adjusted errorCorrectionLevel to 'H' for better error correction
+                if (!err) {
+                    qrCodeContainer.src = url;
+                    const popupImage = document.querySelector('#popupModal img');
+                    popupImage.src = url;
+                } else {
+                    console.error('Error generating QR code:', err);
+                }
             });
         }
-
-        // Call the generateQRCode function when the page loads
-        window.onload = function() {
-            generateQRCode();
-        };
     </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            width: 400px; /* Container width slightly larger than QR code */
+            margin: auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-square img {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            width: 362.59px;
+            height: 362.59px;
+            object-fit: contain;
+        }
+
+        #popupModal img {
+            width: 362.59px;
+            height: 362.59px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body style="margin: 0;">
     <div class="container">
@@ -66,9 +87,9 @@
             </div>
         </div>
         <div class="qr-square">
-            <div id="qrcode-container" onclick="openPopup();">
-                <div id="qrcode"></div> <!-- your QR will be generated here -->
-            </div>
+            <a href="#" onclick="openPopup(); return false;">
+                <img class="qr-code" src="" alt="QR Code"> <!-- Styling handled in CSS -->
+            </a>
             <div class="tap-to-enlarge">Tap to enlarge</div>
         </div>
     </div>
@@ -87,10 +108,9 @@
         <div class="expires-text">Expires in <span id="countdown"></span></div>
         <img class="bottom-image" src="bottom.png" alt="Bottom Image">
         
-        <div id="popupModal" style="display: none;">
-            <div class="popup-overlay" onclick="closePopup()"></div>
-            <div class="popup-content" id="popup-content"></div>
-            <div class="back-font" onclick="closePopup()">Tap to go back</div>
+        <div id="popupModal" style="position: fixed;top: 19%;left: 52%;transform: translate(-50%, -50%);width: 100%;background-color: rgb(255, 255, 255);border: 2px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;padding: 20px 20px 20px 487px;height: 142%;display: none;">
+                <img onclick="closePopup()" src="" alt="QR Code" style="width: 362.59px; height: 362.59px; object-fit: contain;padding-top: 130%;margin-bottom: 65px;"> <!-- Popup size -->
+                <a class="back-font">Tap to go back</a>
         </div>
     </div>
     <script>
@@ -145,32 +165,9 @@
         updateDateTime();
         setInterval(updateCountdown, 1000);
         setInterval(updateDateTime, 1000);
-        
-        function openPopup() {
-        const qrCodeEl = document.getElementById("qrcode");
-        const popupContent = document.getElementById("popup-content");
-
-        // Clear previous popup content
-        popupContent.innerHTML = '';
-
-        // Clone the QR code DOM node (deep clone)
-        const clone = qrCodeEl.cloneNode(true);
-        clone.style.width = '250px';
-        clone.style.height = '250px';
-        clone.style.margin = '0 auto';
-
-        // Append cloned QR to popup
-        popupContent.appendChild(clone);
-
-        // Show the popup
-        document.getElementById("popupModal").style.display = "block";
-    }
-
-    function closePopup() {
-        document.getElementById("popupModal").style.display = "none";
-    }
+        const dailyLink = "https://njticket-public.vercel.app"; // Replace this with the daily link
+        generateQRCode(dailyLink);
     </script>
 
 </body>
-
 </html>
