@@ -1,6 +1,11 @@
 :root {
-    --first: #fc646b;
-    --stripone:#d68c51;
-    --striptwo: #bb49ff;
-    --stripthree: #f67ad5;
+    /*  Pass color  */
+    --first: #f6c7cf;
+    /*  strip colors */
+    --stripone:#e2747b;
+    --striptwo: #8f9a74;
+    --stripthree: #b8cea8;
 }
+
+/* grey #a1a1a1  */
+/* light pink #f6c7cf  */
