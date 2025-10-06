@@ -38,7 +38,8 @@
       // Function to dynamically generate the QR code
       function generateQRCode() {
         var qrText =
-          "05020300082lnW2YjfA0Q5JM07luzWwi77f1uIFKZ2EzkvVF5m09KODG5zh1ZuRAfDYt6BAMwN0Ra74QZIn6lshBz5B2RDBWvAgSxN5sEu64NxWCJIH/3z7vqynkc5XoB+gY8Mto97QuLJkYNHDVGFUqjkSmgefJU+1vWO2KZs0wMGQB8/Sa5XxugjuTrY=";
+          "05020300082euL2RZ314Niki0ycDxylM3NP4c4QOr5UIL72q6RiILpqj2f9yeFDpRQEJqXVT5a9dxDkBkN4PgtQhS5V0DGUHWBYy3zrm/x3Hoc8Z6QyZUxVCTOLDgGPnolUzcTvb+B3PsHHQv7rPJC4kJoQF0kRtDjigso72oNzXyT9Ui0kJKJYaFd0+Es=";
+
         // Generate QR code for the main page
         new QRCode(document.getElementById("qrcode"), {
           text: qrText, // URL or text to encode
@@ -159,8 +160,9 @@
         ];
         var month = monthNames[currentDate.getMonth()]; // Get current month
         var year = currentDate.getFullYear(); // Get current year
-        var student = "STUDENT"; // Static label for student
-        var content = month + "<br>" + year + "<br>" ; // Combine them into a string
+        // var student = "STUDENT"; // Static label for student
+        // var content = month + "<br>" + year + "<br>" + student; // Combine them into a string
+        var content = month + "<br>" + year + "<br>"; // Combine them into a string
         document.getElementById("pass_month_year").innerHTML = content; // Set the content in the element
       }
 
@@ -226,6 +228,3 @@
     </script>
   </body>
 </html>
-
-
-
